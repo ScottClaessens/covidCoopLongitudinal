@@ -9,7 +9,7 @@ Spline and regression discontinuity models for the longitudinal cooperation COVI
 To run this code, you will need to [install R](https://www.r-project.org/) and the following R packages:
 
 ```
-install.packages(c("brms", "cowplot", "targets", "tarchetypes", "tidyverse"))
+install.packages(c("cowplot", "ggeffects", "lme4", "mgcv", "targets", "tarchetypes", "tidymv", "tidyverse"))
 ```
 
 ### Executing code
