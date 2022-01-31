@@ -2,8 +2,8 @@ library(targets)
 library(tarchetypes)
 source("R/functions.R")
 options(tidyverse.quiet = TRUE)
-tar_option_set(packages = c("cowplot", "ggeffects", "lme4", 
-                            "mgcv", "tidymv", "tidyverse"))
+tar_option_set(packages = c("cowplot", "emmeans", "ggeffects", 
+                            "lme4", "mgcv", "tidymv", "tidyverse"))
 # workflow
 list(
   # data file

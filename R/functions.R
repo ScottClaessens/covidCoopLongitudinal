@@ -86,13 +86,29 @@ plotDiscrete <- function(m1.3, m2.3, m3.3, m4.3,
                          title, file) {
   # generic plotting function
   plotFun <- function(model, var) {
-    ggpredict(model, terms = "timeDiscrete") %>%
-    ggplot(aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high)) +
-      geom_errorbar(width = 0.2) +
+    # calculate contrasts
+    con <-
+      emmeans(model, "timeDiscrete") %>%
+      contrast('tukey') %>%
+      broom::tidy()
+    # plot
+    p <-
+      ggpredict(model, terms = "timeDiscrete") %>%
+      ggplot(aes(x = x, y = predicted, group = 1)) +
+      geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +
       geom_point(size = 0.3) +
       scale_y_continuous(name = var, limits = c(0.9, 7.1), breaks = 1:7) +
       xlab("Timepoint") +
       theme_classic()
+    # add contrasts
+    y <- 7
+    if (con$adj.p.value[3] < 0.05) {p <- p + geom_path(data = data.frame(x = c("1", "4+"), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (con$adj.p.value[2] < 0.05) {p <- p + geom_path(data = data.frame(x = c("1", "3" ), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (con$adj.p.value[5] < 0.05) {p <- p + geom_path(data = data.frame(x = c("2", "4+"), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (con$adj.p.value[1] < 0.05) {p <- p + geom_path(data = data.frame(x = c("1", "2" ), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (con$adj.p.value[4] < 0.05) {p <- p + geom_path(data = data.frame(x = c("2", "3" ), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (con$adj.p.value[6] < 0.05) {p <- p + geom_path(data = data.frame(x = c("3", "4+"), predicted = rep(y, 2)), colour = "lightgrey", size = 0.3); y <- y - 0.2}
+    if (sum(con$adj.p.value < 0.05) > 0) p <- p + geom_text(data = data.frame(x = 2.5, predicted = 7.1), label = "*", colour = "lightgrey")
   }
   # individual plots
   p1 <- plotFun(m1.3, var = "NBTNeigh")
