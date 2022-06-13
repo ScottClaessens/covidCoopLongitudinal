@@ -1,6 +1,6 @@
 # COVID-19 Longitudinal
 
-Spline and regression discontinuity models for the longitudinal cooperation COVID-19 project.
+Spline and categorical time models for the longitudinal cooperation COVID-19 project.
 
 ## Getting Started
 
