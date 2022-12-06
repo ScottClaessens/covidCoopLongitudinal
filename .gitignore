@@ -46,3 +46,6 @@ _targets/
 
 # google drive files
 desktop.ini
+
+# documentation folder
+documentation/
